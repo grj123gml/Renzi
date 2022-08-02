@@ -12,8 +12,7 @@ export default {
   actions: {
     async getToken(context, payload) {
       const res =await login(payload)
-      
-      context.commit('setToken', res.data.data)
+      context.commit('setToken', res)
     }
   }
 }

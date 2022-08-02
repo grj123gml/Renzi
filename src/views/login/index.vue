@@ -24,7 +24,7 @@
         <i class="svg-container">
           <svg-icon iconClass="password"></svg-icon>
         </i>
-        <el-input v-model="loginForm.password"></el-input>
+        <el-input type="password" v-model="loginForm.password"></el-input>
       </el-form-item>
 
       <!-- 登录按钮 -->
@@ -32,6 +32,7 @@
         class="loginBtn"
         type="primary"
         style="width: 100%; margin-bottom: 30px"
+        :loading="isLogin"
         @click="login"
         >登录</el-button
       >
@@ -73,19 +74,25 @@ export default {
           //   trigger: 'blur'
           // }
         ]
-      }
+      },
+      isLogin: false
     }
   },
   methods: {
     async login() {
+      this.isLogin = true
       try {
         await this.$refs.loginForm.validate()
-        this.$store.dispatch('user/getToken', this.loginForm)
+        await this.$store.dispatch('user/getToken', this.loginForm)
+        this.$router.push('/')
         this.$message({
+          showClose: true,
           message: '恭喜你，登录成功',
           type: 'success'
         })
-      } catch (error) {}
+      } finally {
+        this.isLogin = false
+      }
     }
   }
 }
