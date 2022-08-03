@@ -9,6 +9,9 @@ router.beforeEach((to, from, next) => {
   const token = store.state.user.token
   //用有无token判断是否登录，登录的话
   if (token) {
+    if (!store.state.user.userInfo.userId) {
+      store.dispatch('user/getuserInfo')
+    }
     // 判断是否是登录页，若果是跳至主页
     if (to.path === '/login') return next('/')
     // 否则直接进入
