@@ -32,6 +32,7 @@ service.interceptors.response.use(
     return Promise.reject(new Error(message))
   },
   async function (error) {
+    console.log(error)
     if (error?.response?.status === 401) {
       Message.error('登录过期')
       await store.dispatch('user/logout') //退出登录
