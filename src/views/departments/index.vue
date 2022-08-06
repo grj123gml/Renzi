@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <el-card class="box-card">
+      <el-card class="box-card" v-loading="loading">
         <!-- 头部 -->
         <TreeTools
           @add="showAddDept"
@@ -50,7 +50,8 @@ export default {
       },
       company: { name: '传智教育', manager: '负责人' },
       dialogVisible: false,
-      currentNode: {}
+      currentNode: {},
+      loading:false
     }
   },
 
@@ -60,17 +61,19 @@ export default {
 
   methods: {
     async loadergetDepts() {
+      this.loading=true
       const res = await getDeptsApi()
       console.log(res)
       this.treeData = transListToTree(res.depts, '')
+      this.loading=false
     },
     showAddDept(val) {
       this.dialogVisible = true
       this.currentNode = val
     },
-    showEdit() {
+    showEdit(val) {
       this.dialogVisible = true
-      this.$refs.addDept.getDeptById()
+      this.$refs.addDept.getDeptById(val.id)
     }
   }
 }
