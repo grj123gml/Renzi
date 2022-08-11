@@ -51,7 +51,7 @@ export default {
       company: { name: '传智教育', manager: '负责人' },
       dialogVisible: false,
       currentNode: {},
-      loading:false
+      loading: false
     }
   },
 
@@ -61,11 +61,11 @@ export default {
 
   methods: {
     async loadergetDepts() {
-      this.loading=true
+      this.loading = true
       const res = await getDeptsApi()
       console.log(res)
       this.treeData = transListToTree(res.depts, '')
-      this.loading=false
+      this.loading = false
     },
     showAddDept(val) {
       this.dialogVisible = true

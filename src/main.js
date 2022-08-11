@@ -23,9 +23,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // 注册 ElementUI
-Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
+Vue.use(ElementUI)
 
 //自定义指令
 for (let key in directives) {

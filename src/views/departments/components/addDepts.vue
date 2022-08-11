@@ -150,6 +150,7 @@ export default {
     //关闭弹框
     onClose() {
       this.$emit('update:visiable', false)
+      // 重置表单
       this.$refs.form.resetFields()
       this.formData = {
         name: '', // 部门名称
