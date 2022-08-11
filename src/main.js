@@ -15,6 +15,9 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
+// 引入自己封装的组件
+import components from './components'
+Vue.use(components)
 
 // mock假数据
 if (process.env.NODE_ENV === 'production') {
