@@ -22,3 +22,12 @@ export function getAddRoleApi(data) {
     data
   })
 }
+
+/**
+ * 获取公司信息
+ * **/
+export function getCompanyInfoApi(companyId) {
+  return request({
+    url: `/company/${companyId}`
+  })
+}
