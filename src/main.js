@@ -25,6 +25,17 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 
+import * as filters from '@/filters'
+// 自定义过滤器指令
+for (let key in filters) {
+  Vue.filter(key, filters[key])
+}
+
+// 时间过滤器
+// Vue.filter('formatTime', (val) => {
+//   return dayjs(val).format('YYYY-MM-DD')
+// })
+
 // 注册 ElementUI
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
