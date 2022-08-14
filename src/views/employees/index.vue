@@ -6,9 +6,13 @@
           <span>共{{ total }}条记录</span>
         </template>
         <template #right>
-          <el-button type="danger">普通excel导出</el-button>
+          <el-button type="danger" @click="Excelimport"
+            >普通excel导出</el-button
+          >
           <el-button type="info">复杂表头excel导出</el-button>
-          <el-button type="success" @click="$router.push('/import')">excel导入</el-button>
+          <el-button type="success" @click="$router.push('/import')"
+            >excel导入</el-button
+          >
           <el-button type="primary" @click="Addemployees">新增员工</el-button>
         </template>
       </PageTools>
@@ -85,7 +89,10 @@
       </el-card>
     </div>
     <!-- 添加弹框 -->
-    <Addemployees @add-success="getEmployeesInfo" :visible.sync="showAddDialog"></Addemployees>
+    <Addemployees
+      @add-success="getEmployeesInfo"
+      :visible.sync="showAddDialog"
+    ></Addemployees>
   </div>
 </template>
 
@@ -93,6 +100,7 @@
 import Addemployees from '@/views/employees/components/add-employees.vue'
 import { getEmployeesInfoApi, delEmployee } from '@/api/employees'
 import employees from '@/constant/employees'
+const { exportExcelMapPath, hireType } = employees
 export default {
   data() {
     return {
@@ -152,6 +160,35 @@ export default {
     // 新增员工
     Addemployees() {
       this.showAddDialog = true
+    },
+    // 导出表格
+    async Excelimport() {
+      const { export_json_to_excel } = await import('@/vendor/Export2Excel')
+      const { rows } = await getEmployeesInfoApi({
+        page: 1,
+        size: this.total
+      })
+      const header = Object.keys(exportExcelMapPath)
+      console.log(header)
+      const data = rows.map((item) => {
+        return header.map((h) => {
+          if (h === '聘用形式') {
+            const finditem = hireType.find(
+              (hire) => hire.id === item[exportExcelMapPath[h]]
+            )
+            return finditem ? finditem.value : '未知'
+          } else {
+            return item[exportExcelMapPath[h]]
+          }
+        })
+      })
+      export_json_to_excel({
+        header, //表头 必填
+        data,
+        filename: '员工列表', //非必填
+        autoWidth: true, //非必填
+        bookType: 'xlsx' //非必填
+      })
     }
   }
 }
