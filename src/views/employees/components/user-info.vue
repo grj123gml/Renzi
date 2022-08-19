@@ -1,5 +1,9 @@
 <template>
   <div class="user-info">
+    <i
+      @click="$router.push(`/employees/print/${userId}?type=personal`)"
+      class="el-icon-printer"
+    ></i>
     <!-- 个人信息 -->
     <el-form label-width="220px">
       <!-- 工号 入职时间 -->
@@ -58,6 +62,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
+            <UploadImg ref="Photo" @onSuccess="headerImgSuccess"></UploadImg>
           </el-form-item>
         </el-col>
       </el-row>
@@ -91,6 +96,7 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <UploadImg ref="img" @onSuccess="ImgSuccess"></UploadImg>
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -386,6 +392,7 @@
 </template>
 
 <script>
+import UploadImg from '@/components/UploadImg'
 import EmployeeEnum from '@/constant/employees'
 import { getUserDetail, saveUserDetailById } from '@/api/user'
 import { getPersonalDetail, updatePersonal } from '@/api/employees.js'
@@ -460,6 +467,9 @@ export default {
       }
     }
   },
+  components: {
+    UploadImg
+  },
   created() {
     this.loadUserDetail()
     this.loadEmployeesInfo()
@@ -468,20 +478,36 @@ export default {
     // 获取上半部分信息
     async loadUserDetail() {
       this.userInfo = await getUserDetail(this.userId)
+      this.$refs.Photo.fileList.push({ url: this.userInfo.staffPhoto })
     },
     // 获取下半部分信息
     async loadEmployeesInfo() {
       this.formData = await getPersonalDetail(this.userId)
+      this.$refs.img.fileList.push({ url: this.formData.staffPhoto })
     },
     // 更新上半部分信息
     async onUpdate() {
+      if (this.$refs.Photo.loading) {
+        return this.$message.error('正在上传中')
+      }
       await saveUserDetailById(this.userInfo)
       this.$message.success('更新成功')
     },
     // 更新下半部分信息
     async onSave() {
+      if (this.$refs.img.loading) {
+        return this.$message.error('正在上传中')
+      }
       await updatePersonal(this.formData)
       this.$message.success('更新成功')
+    },
+    // 监听头部头像上传
+    headerImgSuccess({ url }) {
+      this.userInfo.staffPhoto = url
+    },
+    // 监听下面员工头像上传
+    ImgSuccess({ url }) {
+      this.formData.staffPhoto = url
     }
   }
 }

@@ -73,3 +73,5 @@ export function updatePersonal(data) {
     data
   })
 }
+
+

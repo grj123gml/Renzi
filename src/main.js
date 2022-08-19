@@ -18,6 +18,9 @@ import * as directives from '@/directives'
 // 引入自己封装的组件
 import components from './components'
 Vue.use(components)
+// 打印
+import Print from 'vue-print-nb'
+Vue.use(Print)
 
 // mock假数据
 if (process.env.NODE_ENV === 'production') {
