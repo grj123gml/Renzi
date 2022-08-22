@@ -4,6 +4,7 @@ import getters from './getters'
 import app from './modules/app'
 import settings from './modules/settings'
 import user from './modules/user'
+import permission from './modules/permission'
 import createVuexPersisted from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -12,7 +13,8 @@ const store = new Vuex.Store({
   modules: {
     app,
     settings,
-    user
+    user,
+    permission
   },
   getters,
   plugins: [
@@ -21,7 +23,7 @@ const store = new Vuex.Store({
         // 指定存储某个模块的数据
         return {
           user: {
-            token:state.user.token
+            token: state.user.token
           }
         }
       }

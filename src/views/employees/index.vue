@@ -6,14 +6,25 @@
           <span>共{{ total }}条记录</span>
         </template>
         <template #right>
-          <el-button type="danger" @click="Excelimport"
+          <el-button
+            type="danger"
+            @click="Excelimport"
+            v-if="isHas('employees-export')"
             >普通excel导出</el-button
           >
           <el-button type="info">复杂表头excel导出</el-button>
-          <el-button type="success" @click="$router.push('/import')"
+          <el-button
+            type="success"
+            @click="$router.push('/import')"
+            v-isHas="point.employees.import"
             >excel导入</el-button
           >
-          <el-button type="primary" @click="Addemployees">新增员工</el-button>
+          <el-button
+            type="primary"
+            @click="Addemployees"
+            v-isHas="point.employees.add"
+            >新增员工</el-button
+          >
         </template>
       </PageTools>
       <!-- 放置表格和分页 -->
@@ -74,7 +85,11 @@
               <el-button type="text" size="small" @click="onRemoveRole(row.id)"
                 >角色</el-button
               >
-              <el-button type="text" size="small" @click="onRemove(row.id)"
+              <el-button
+                type="text"
+                size="small"
+                @click="onRemove(row.id)"
+                v-isHas="point.employees.del"
                 >删除</el-button
               >
             </template>
@@ -122,6 +137,7 @@ import AssignRole from '@/views/employees/components/assign-role.vue'
 import Addemployees from '@/views/employees/components/add-employees.vue'
 import { getEmployeesInfoApi, delEmployee } from '@/api/employees'
 import employees from '@/constant/employees'
+import mixinPermission from '@/mixins/permission'
 const { exportExcelMapPath, hireType } = employees
 import QRCode from 'qrcode'
 export default {
@@ -139,6 +155,7 @@ export default {
       currentEmployeesId: ''
     }
   },
+  mixins: [mixinPermission],
   components: {
     Addemployees,
     AssignRole
@@ -232,6 +249,9 @@ export default {
       this.dialogShow = true
       this.currentEmployeesId = id
       // console.log(this.currentEmployeesId)
+    },
+    isHas(point) {
+      return this.$store.state.permission.points.includes(point)
     }
   }
 }
