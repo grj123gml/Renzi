@@ -13,10 +13,12 @@
     </div>
 
     <div class="right-menu">
+      <ToggleLang />
+      <FullScreen></FullScreen>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img
-            :src="$store.state.user.userInfo.staffPhoto"
+            :src="$store.getters.avatar"
             class="user-avatar"
             v-imgError="defaultimg"
           />
@@ -110,6 +112,7 @@ export default {
   }
 
   .right-menu {
+    display: flex;
     float: right;
     height: 100%;
     line-height: 50px;
@@ -164,6 +167,9 @@ export default {
         }
       }
     }
+  }
+  .el-dropdown{
+    margin-right: 10px;
   }
 }
 </style>

@@ -9,7 +9,8 @@ export default {
     {
       path: '',
       component: () => import('@/views/employees'),
-      meta: { title: '员工', icon: 'people' }
+      meta: { title: 'employees', icon: 'people' },
+      name: 'employees'
     },
     {
       path: 'detail/:id',
